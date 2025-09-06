@@ -12,6 +12,7 @@
     "openapi:convert": "npx @redocly/openapi-cli bundle ./src/api/schema.yml -o ./src/api/gen/schema.json --format json"
   },
   "dependencies": {
+  "axios": "^1.6.8",
     "@fortawesome/fontawesome-svg-core": "6.4.0",
     "@fortawesome/free-regular-svg-icons": "6.4.0",
     "@fortawesome/free-solid-svg-icons": "6.4.0",
@@ -41,9 +42,7 @@
       "react-app/jest"
     ]
   },
-  "resolutions": {
-    "axios": "0.27.2"
-  },
+  
   "browserslist": {
     "production": [
       ">0.2%",
