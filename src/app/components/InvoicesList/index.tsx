@@ -3,6 +3,7 @@ import { Invoice } from 'types'
 import { useEffect, useCallback, useState } from 'react'
 import { calcInvoiceTotals } from 'utils/invoiceTotals'
 import { formatCurrency } from 'utils/currency'
+import { Link } from 'react-router-dom'
 
 const InvoicesList = (): React.ReactElement => {
   const api = useApi()
@@ -73,13 +74,15 @@ const InvoicesList = (): React.ReactElement => {
                       <th className="border-0 py-2 py-md-3 px-2 small d-none d-xl-table-cell">
                         Deadline
                       </th>
+                      <th className="border-0 py-2 py-md-3 px-2 small">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {invoicesList?.map((invoice) => {
                       const { total, tax } = calcInvoiceTotals(invoice)
                       const isPaid = invoice.paid
-                      const isFinalized = invoice.finalized
                       return (
                         <tr key={invoice.id} className="border-bottom">
                           <td className="py-2 py-md-3 px-3 px-md-4 fw-medium small">
@@ -102,7 +105,7 @@ const InvoicesList = (): React.ReactElement => {
                             {invoice.customer?.zip_code}{' '}
                             {invoice.customer?.city}
                           </td>
-                          <td className="py-2 py-md-3 px-2 text-end fw-medium small">
+                          <td className="py-2 py-md-3 px-2 text-end fw-bold small">
                             {formatCurrency(invoice.total ?? total)}
                             <div
                               className="d-md-none text-muted"
@@ -118,13 +121,6 @@ const InvoicesList = (): React.ReactElement => {
                             <div className="d-flex flex-column gap-1">
                               <span
                                 className={`badge badge-sm ${
-                                  isFinalized ? 'bg-success' : 'bg-secondary'
-                                }`}
-                              >
-                                {isFinalized ? 'Final' : 'Draft'}
-                              </span>
-                              <span
-                                className={`badge badge-sm ${
                                   isPaid ? 'bg-primary' : 'bg-warning'
                                 }`}
                               >
@@ -137,6 +133,16 @@ const InvoicesList = (): React.ReactElement => {
                           </td>
                           <td className="py-2 py-md-3 px-2 small d-none d-xl-table-cell">
                             {invoice.deadline}
+                          </td>
+                          <td className="py-2 py-md-3 px-2 small">
+                            <div className="d-flex gap-1">
+                              <Link
+                                to={`/invoice/${invoice.id}`}
+                                className="btn btn-sm btn-secondary"
+                              >
+                                View invoice
+                              </Link>
+                            </div>
                           </td>
                         </tr>
                       )
