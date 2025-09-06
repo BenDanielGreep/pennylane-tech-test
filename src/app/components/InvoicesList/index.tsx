@@ -1,6 +1,8 @@
 import { useApi } from 'api'
 import { Invoice } from 'types'
 import { useEffect, useCallback, useState } from 'react'
+import { calcInvoiceTotals } from 'utils/invoiceTotals'
+import { formatCurrency } from 'utils/currency'
 
 const InvoicesList = (): React.ReactElement => {
   const api = useApi()
@@ -17,41 +19,136 @@ const InvoicesList = (): React.ReactElement => {
   }, [fetchInvoices])
 
   return (
-    <table className="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Customer</th>
-          <th>Address</th>
-          <th>Total</th>
-          <th>Tax</th>
-          <th>Finalized</th>
-          <th>Paid</th>
-          <th>Date</th>
-          <th>Deadline</th>
-        </tr>
-      </thead>
-      <tbody>
-        {invoicesList.map((invoice) => (
-          <tr key={invoice.id}>
-            <td>{invoice.id}</td>
-            <td>
-              {invoice.customer?.first_name} {invoice.customer?.last_name}
-            </td>
-            <td>
-              {invoice.customer?.address}, {invoice.customer?.zip_code}{' '}
-              {invoice.customer?.city}
-            </td>
-            <td>{invoice.total}</td>
-            <td>{invoice.tax}</td>
-            <td>{invoice.finalized ? 'Yes' : 'No'}</td>
-            <td>{invoice.paid ? 'Yes' : 'No'}</td>
-            <td>{invoice.date}</td>
-            <td>{invoice.deadline}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="py-3 py-md-4">
+      {/* Header Section Start - put me in my own component */}
+      <div className="row mb-3 mb-md-4">
+        <div className="col">
+          <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
+            <div>
+              <h1 className="h3 h2-md mb-1">Invoices Dashboard</h1>
+              <p className="text-muted mb-0 small">
+                Manage and track your invoices
+              </p>
+            </div>
+            <div>
+              <button className="btn btn-primary btn-sm">
+                <i className="fas fa-plus me-1 me-md-2"></i>
+                <span className="d-none d-sm-inline">New </span>Invoice
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Header Section End */}
+
+      <div className="row">
+        <div className="col">
+          <div className="card shadow-sm border-0 rounded-3">
+            <div className="card-body p-0">
+              <div className="table-responsive">
+                <table className="table table-hover mb-0">
+                  <thead className="bg-light">
+                    <tr>
+                      <th className="border-0 py-2 py-md-3 px-3 px-md-4 small">
+                        Id
+                      </th>
+                      <th className="border-0 py-2 py-md-3 px-2 small">
+                        Customer
+                      </th>
+                      <th className="border-0 py-2 py-md-3 px-2 small d-none d-lg-table-cell">
+                        Address
+                      </th>
+                      <th className="border-0 py-2 py-md-3 px-2 text-end small">
+                        Total
+                      </th>
+                      <th className="border-0 py-2 py-md-3 px-2 text-end small d-none d-md-table-cell">
+                        Tax
+                      </th>
+                      <th className="border-0 py-2 py-md-3 px-2 text-center small d-none d-sm-table-cell">
+                        Status
+                      </th>
+                      <th className="border-0 py-2 py-md-3 px-2 small d-none d-xl-table-cell">
+                        Date
+                      </th>
+                      <th className="border-0 py-2 py-md-3 px-2 small d-none d-xl-table-cell">
+                        Deadline
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {invoicesList?.map((invoice) => {
+                      const { total, tax } = calcInvoiceTotals(invoice)
+                      const isPaid = invoice.paid
+                      const isFinalized = invoice.finalized
+                      return (
+                        <tr key={invoice.id} className="border-bottom">
+                          <td className="py-2 py-md-3 px-3 px-md-4 fw-medium small">
+                            {invoice.id}
+                          </td>
+                          <td className="py-2 py-md-3 px-2">
+                            <div className="small fw-medium">
+                              {invoice.customer?.first_name}{' '}
+                              {invoice.customer?.last_name}
+                            </div>
+                            <div
+                              className="d-lg-none text-muted"
+                              style={{ fontSize: '0.75rem' }}
+                            >
+                              {invoice.customer?.city}
+                            </div>
+                          </td>
+                          <td className="py-2 py-md-3 px-2 text-muted small d-none d-lg-table-cell">
+                            {invoice.customer?.address},{' '}
+                            {invoice.customer?.zip_code}{' '}
+                            {invoice.customer?.city}
+                          </td>
+                          <td className="py-2 py-md-3 px-2 text-end fw-medium small">
+                            {formatCurrency(invoice.total ?? total)}
+                            <div
+                              className="d-md-none text-muted"
+                              style={{ fontSize: '0.7rem' }}
+                            >
+                              Tax: {formatCurrency(invoice.tax ?? tax)}
+                            </div>
+                          </td>
+                          <td className="py-2 py-md-3 px-2 text-end small d-none d-md-table-cell">
+                            {formatCurrency(invoice.tax ?? tax)}
+                          </td>
+                          <td className="py-2 py-md-3 px-2 text-center d-none d-sm-table-cell">
+                            <div className="d-flex flex-column gap-1">
+                              <span
+                                className={`badge badge-sm ${
+                                  isFinalized ? 'bg-success' : 'bg-secondary'
+                                }`}
+                              >
+                                {isFinalized ? 'Final' : 'Draft'}
+                              </span>
+                              <span
+                                className={`badge badge-sm ${
+                                  isPaid ? 'bg-primary' : 'bg-warning'
+                                }`}
+                              >
+                                {isPaid ? 'Paid' : 'Pending'}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-2 py-md-3 px-2 small d-none d-xl-table-cell">
+                            {invoice.date}
+                          </td>
+                          <td className="py-2 py-md-3 px-2 small d-none d-xl-table-cell">
+                            {invoice.deadline}
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
