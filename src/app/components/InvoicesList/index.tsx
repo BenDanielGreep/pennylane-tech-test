@@ -4,6 +4,7 @@ import { useEffect, useCallback, useState } from 'react'
 import { calcInvoiceTotals } from 'utils/invoiceTotals'
 import { formatCurrency } from 'utils/currency'
 import { Link } from 'react-router-dom'
+import PageHeader from '../PageHeader'
 
 const InvoicesList = (): React.ReactElement => {
   const api = useApi()
@@ -21,26 +22,15 @@ const InvoicesList = (): React.ReactElement => {
 
   return (
     <div className="py-3 py-md-4">
-      {/* Header Section Start - put me in my own component */}
-      <div className="row mb-3 mb-md-4">
-        <div className="col">
-          <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
-            <div>
-              <h1 className="h3 h2-md mb-1">Invoices Dashboard</h1>
-              <p className="text-muted mb-0 small">
-                Manage and track your invoices
-              </p>
-            </div>
-            <div>
-              <Link to="/invoice/create" className="btn btn-primary btn-sm">
-                <i className="fas fa-plus me-1 me-md-2"></i>
-                <span className="d-none d-sm-inline">New </span>Invoice
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* Header Section End */}
+      <PageHeader
+        title="Invoices Dashboard"
+        subtitle="Manage and track your invoices"
+        actions={
+          <Link to="/invoice/create" className="btn btn-primary">
+            <span className="d-none d-sm-inline">New Invoice</span>
+          </Link>
+        }
+      />
 
       <div className="row">
         <div className="col">

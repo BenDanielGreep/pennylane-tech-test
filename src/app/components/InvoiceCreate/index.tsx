@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useApi } from 'api'
 import CustomerAutocomplete from '../CustomerAutocomplete'
 import ProductAutocomplete from '../ProductAutocomplete'
+import PageHeader from '../PageHeader'
 import { formatCurrency } from 'utils/currency'
 import { calcInvoiceTotals } from 'utils/invoiceTotals'
 
@@ -154,27 +155,19 @@ const InvoiceCreate = () => {
 
   return (
     <div className="py-3 py-md-4">
-      <div className="row mb-3 mb-md-4">
-        <div className="col">
-          <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
-            <div>
-              <h1 className="h3 h2-md mb-1">Create New Invoice</h1>
-              <p className="text-muted mb-0 small">
-                Build a new invoice with customer details and products
-              </p>
-            </div>
-            <div>
-              <button
-                type="button"
-                className="btn btn-sm btn-outline-secondary me-2"
-                onClick={() => navigate('/')}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        title="Create New Invoice"
+        subtitle="Build a new invoice with customer details and products"
+        actions={
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary me-2"
+            onClick={() => navigate('/')}
+          >
+            Cancel
+          </button>
+        }
+      />
 
       <form onSubmit={handleSubmit}>
         <div className="row">
