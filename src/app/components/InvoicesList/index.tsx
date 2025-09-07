@@ -34,11 +34,11 @@ const InvoicesList = (): React.ReactElement => {
 
       <div className="row">
         <div className="col">
-          <div className="card shadow-sm border-0 rounded-3">
+          <div className="card shadow-sm border-0 rounded-4 overflow-hidden">
             <div className="card-body p-0">
               <div className="table-responsive">
                 <table className="table table-hover mb-0">
-                  <thead className="bg-light">
+                  <thead className="table-secondary">
                     <tr>
                       <th className="border-0 py-2 py-md-3 px-3 px-md-4 small">
                         Id
@@ -130,7 +130,7 @@ const InvoicesList = (): React.ReactElement => {
                                 to={`/invoice/${invoice.id}`}
                                 className="btn btn-sm btn-secondary"
                               >
-                                View invoice
+                                View
                               </Link>
                             </div>
                           </td>

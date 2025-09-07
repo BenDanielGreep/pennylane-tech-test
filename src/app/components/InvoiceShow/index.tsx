@@ -92,7 +92,7 @@ const InvoiceShow = () => {
           &larr; Back to invoices
         </Link>
       </div>
-      {loading && <div className="text-muted">Loading invoice…</div>}
+      {loading && <div className="text-muted">Loading invoice</div>}
       {error && !loading && (
         <div className="alert alert-danger d-flex justify-content-between align-items-center">
           <span>{error}</span>
@@ -142,9 +142,9 @@ const InvoiceShow = () => {
                     onClick={markPaid}
                   >
                     {invoice.paid
-                      ? '✓ Paid'
+                      ? 'Paid'
                       : updating
-                      ? 'Marking…'
+                      ? 'Marking'
                       : 'Mark as Paid'}
                   </button>
 
@@ -154,9 +154,9 @@ const InvoiceShow = () => {
                     onClick={finalizeInvoice}
                   >
                     {invoice.finalized
-                      ? '✓ Finalized'
+                      ? 'Finalized'
                       : updating
-                      ? 'Finalizing…'
+                      ? 'Finalizing'
                       : 'Finalize Invoice'}
                   </button>
 
@@ -165,7 +165,7 @@ const InvoiceShow = () => {
                     disabled={updating}
                     onClick={deleteInvoice}
                   >
-                    {updating ? 'Deleting…' : 'Delete Invoice'}
+                    {updating ? 'Deleting' : 'Delete Invoice'}
                   </button>
                 </div>
                 {updating && (
@@ -196,7 +196,7 @@ const InvoiceShow = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-muted small">No customer assigned</div>
+                  <div className="text-muted small">No customer</div>
                 )}
               </div>
             </div>
@@ -208,7 +208,7 @@ const InvoiceShow = () => {
                   Line Items
                 </h6>
                 {invoice.invoice_lines.length === 0 && (
-                  <div className="text-muted small">No lines</div>
+                  <div className="text-muted small">No items</div>
                 )}
                 {invoice.invoice_lines.length > 0 && (
                   <div className="table-responsive mb-3">
