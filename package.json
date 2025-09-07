@@ -12,13 +12,14 @@
     "openapi:convert": "npx @redocly/openapi-cli bundle ./src/api/schema.yml -o ./src/api/gen/schema.json --format json"
   },
   "dependencies": {
-  "axios": "^1.6.8",
     "@fortawesome/fontawesome-svg-core": "6.4.0",
     "@fortawesome/free-regular-svg-icons": "6.4.0",
     "@fortawesome/free-solid-svg-icons": "6.4.0",
     "@fortawesome/react-fontawesome": "0.2.0",
+    "axios": "^1.6.8",
     "bootstrap": "5.3.0",
     "classnames": "2.3.2",
+    "jest-axe": "^10.0.0",
     "lodash": "4.17.21",
     "numeral": "2.0.6",
     "openapi-client-axios": "7.3.1",
@@ -42,7 +43,6 @@
       "react-app/jest"
     ]
   },
-  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -57,10 +57,11 @@
   },
   "devDependencies": {
     "@redocly/openapi-cli": "1.0.0-beta.95",
-    "@testing-library/jest-dom": "5.17.0",
+    "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "13.4.0",
     "@testing-library/user-event": "13.5.0",
     "@types/jest": "^27.0.1",
+    "@types/jest-axe": "^3.5.9",
     "@types/lodash": "4.14.195",
     "@types/node": "20.4.2",
     "@types/numeral": "2.0.2",
