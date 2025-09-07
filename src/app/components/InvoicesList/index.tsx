@@ -32,10 +32,10 @@ const InvoicesList = (): React.ReactElement => {
               </p>
             </div>
             <div>
-              <button className="btn btn-primary btn-sm">
+              <Link to="/invoice/create" className="btn btn-primary btn-sm">
                 <i className="fas fa-plus me-1 me-md-2"></i>
                 <span className="d-none d-sm-inline">New </span>Invoice
-              </button>
+              </Link>
             </div>
           </div>
         </div>
