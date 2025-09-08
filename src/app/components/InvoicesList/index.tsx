@@ -12,6 +12,7 @@ import {
 } from 'utils/invoiceFilters'
 
 const InvoicesList = (): React.ReactElement => {
+  console.log('📋 InvoicesList component loading...')
   const api = useApi()
   const [invoicesList, setInvoicesList] = useState<Invoice[]>([])
   const [activeTab, setActiveTab] = useState<InvoiceFilter>('all')
