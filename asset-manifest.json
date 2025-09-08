@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/pennylane-tech-test/static/css/main.b1235050.css",
+    "main.js": "/pennylane-tech-test/static/js/main.80e2b14e.js",
+    "static/media/axios.cjs": "/pennylane-tech-test/static/media/axios.f5e5c4d2ad3bc47a8000.cjs",
+    "index.html": "/pennylane-tech-test/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.b1235050.css",
+    "static/js/main.80e2b14e.js"
+  ]
+}
