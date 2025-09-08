@@ -93,17 +93,6 @@ const InvoiceShow = () => {
           title={
             invoice ? `Viewing Invoice #${invoice.id}` : 'Loading Invoice...'
           }
-          subtitle={
-            invoice
-              ? `${
-                  invoice.finalized
-                    ? invoice.paid
-                      ? 'Paid'
-                      : 'Finalized'
-                    : 'Draft'
-                } • Due: ${invoice.deadline || 'No deadline'}`
-              : undefined
-          }
           actions={
             <Link to="/" className="btn btn-outline-primary">
               View All Invoices

@@ -52,7 +52,6 @@ const InvoicesList = (): React.ReactElement => {
     <div className="py-3 py-md-4">
       <PageHeader
         title="Invoices Dashboard"
-        subtitle="Manage and track your invoices"
         actions={
           <Link to="/invoice/create" className="btn btn-primary">
             <span className="d-none d-sm-inline">New Invoice</span>

@@ -10,11 +10,6 @@ describe('PageHeader', () => {
     )
   })
 
-  it('renders subtitle when provided', () => {
-    render(<PageHeader title="Test Title" subtitle="Test subtitle" />)
-    expect(screen.getByText('Test subtitle')).toBeInTheDocument()
-  })
-
   it('renders actions when provided', () => {
     const actions = <button>Test Action</button>
     render(<PageHeader title="Test Title" actions={actions} />)
@@ -44,18 +39,6 @@ describe('PageHeader', () => {
     render(<PageHeader title="" actions={actions} />)
     expect(screen.getByTestId('back-link')).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('')
-  })
-
-  it('renders title and subtitle together', () => {
-    render(
-      <PageHeader title="Dashboard" subtitle="Manage your data and settings" />
-    )
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-      'Dashboard'
-    )
-    expect(
-      screen.getByText('Manage your data and settings')
-    ).toBeInTheDocument()
   })
 
   // accessibility test with axe

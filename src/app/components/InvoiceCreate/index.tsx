@@ -157,7 +157,6 @@ const InvoiceCreate = () => {
     <div className="py-3 py-md-4">
       <PageHeader
         title="Create New Invoice"
-        subtitle="Build a new invoice with customer details and products"
         actions={
           <button
             type="button"
