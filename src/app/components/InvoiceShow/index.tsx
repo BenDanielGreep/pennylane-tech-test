@@ -4,6 +4,7 @@ import { useApi } from 'api'
 import { Invoice } from 'types'
 import { calcInvoiceTotals } from 'utils/invoiceTotals'
 import { formatCurrency } from 'utils/currency'
+import PageHeader from '../PageHeader'
 
 const InvoiceShow = () => {
   const { id } = useParams<{ id: string }>()
@@ -88,11 +89,27 @@ const InvoiceShow = () => {
   return (
     <div className="min-vh-100 d-flex flex-column">
       <div className="container py-4 pb-5 flex-grow-1">
-        <div className="mb-3">
-          <Link to="/" className="text-decoration-none btn btn-outline-primary">
-            &larr; Back to invoices
-          </Link>
-        </div>
+        <PageHeader
+          title={
+            invoice ? `Viewing Invoice #${invoice.id}` : 'Loading Invoice...'
+          }
+          subtitle={
+            invoice
+              ? `${
+                  invoice.finalized
+                    ? invoice.paid
+                      ? 'Paid'
+                      : 'Finalized'
+                    : 'Draft'
+                } • Due: ${invoice.deadline || 'No deadline'}`
+              : undefined
+          }
+          actions={
+            <Link to="/" className="btn btn-outline-primary">
+              View All Invoices
+            </Link>
+          }
+        />
         {loading && <div className="text-muted">Loading invoice</div>}
         {error && !loading && (
           <div className="alert alert-danger d-flex justify-content-between align-items-center">
@@ -121,7 +138,7 @@ const InvoiceShow = () => {
                         invoice.finalized
                           ? invoice.paid
                             ? 'bg-success'
-                            : 'bg-warning'
+                            : 'bg-transparent border border-success text-success'
                           : 'bg-secondary'
                       } fs-6 px-3 py-2`}
                     >
