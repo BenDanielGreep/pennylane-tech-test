@@ -15,12 +15,12 @@ class ErrorBoundary extends React.Component<
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    console.error('🚨 ErrorBoundary caught error:', error)
+    console.error('ErrorBoundary caught error:', error)
     return { hasError: true, error }
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('🚨 Error details:', error, errorInfo)
+    console.error('Error details:', error, errorInfo)
   }
 
   render() {
@@ -30,8 +30,8 @@ class ErrorBoundary extends React.Component<
           <div className="text-center">
             <h1 className="text-danger">Something went wrong</h1>
             <p className="text-muted">Check the browser console for details</p>
-            <button 
-              className="btn btn-primary" 
+            <button
+              className="btn btn-primary"
               onClick={() => window.location.reload()}
             >
               Reload Page

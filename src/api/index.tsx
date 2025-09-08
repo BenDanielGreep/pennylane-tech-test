@@ -23,13 +23,9 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({
   token,
   children,
 }) => {
-  console.log('🔌 ApiProvider initializing...')
-  console.log('🌐 API URL:', url)
-  console.log('🔑 Token provided:', !!token)
-  
   const apiRef = useRef<OpenAPIClientAxios | null>(null)
+
   if (!apiRef.current) {
-    console.log('🔧 Creating OpenAPI client instance...')
     try {
       const instance = new OpenAPIClientAxios({
         /* @ts-ignore */
@@ -60,13 +56,29 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({
         return candidate.create(this.axiosConfigDefaults)
       }
       apiRef.current = instance
-      console.log('✅ OpenAPI client created successfully')
     } catch (error) {
-      console.error('❌ Failed to create OpenAPI client:', error)
+      console.error('Failed to create OpenAPI client:', error)
       throw error
     }
   }
   const clientRef = useRef(apiRef.current.initSync<Client>())
+
+  // Show error if no token is provided
+  if (!token) {
+    return (
+      <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+        <div className="text-center">
+          <h1 className="text-danger">Configuration Error</h1>
+          <p className="text-muted">
+            Missing API token. Please check your environment configuration.
+          </p>
+          <small className="text-muted">
+            Make sure REACT_APP_API_TOKEN is set in your .env file
+          </small>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <ApiContext.Provider value={{ client: clientRef.current }}>
