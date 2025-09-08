@@ -86,180 +86,207 @@ const InvoiceShow = () => {
   const net = totals.total - totals.tax
 
   return (
-    <div className="container py-4">
-      <div className="mb-3">
-        <Link to="/" className="text-decoration-none">
-          &larr; Back to invoices
-        </Link>
-      </div>
-      {loading && <div className="text-muted">Loading invoice</div>}
-      {error && !loading && (
-        <div className="alert alert-danger d-flex justify-content-between align-items-center">
-          <span>{error}</span>
-          <button className="btn btn-sm btn-light" onClick={fetchInvoice}>
-            Retry
-          </button>
+    <div className="min-vh-100 d-flex flex-column">
+      <div className="container py-4 pb-5 flex-grow-1">
+        <div className="mb-3">
+          <Link to="/" className="text-decoration-none btn btn-outline-primary">
+            &larr; Back to invoices
+          </Link>
         </div>
-      )}
-      {invoice && !loading && (
-        <div className="row g-4">
-          <div className="col-lg-4 d-flex flex-column gap-4">
-            <div className="card shadow-sm">
-              <div className="card-body">
-                <h5 className="card-title mb-3">Invoice #{invoice.id}</h5>
-                <div className="mb-2 small">
-                  <div>
-                    <strong>Status:</strong>{' '}
-                    {invoice.finalized
-                      ? invoice.paid
-                        ? 'Paid'
-                        : 'Finalized'
-                      : 'Draft'}
+        {loading && <div className="text-muted">Loading invoice</div>}
+        {error && !loading && (
+          <div className="alert alert-danger d-flex justify-content-between align-items-center">
+            <span>{error}</span>
+            <button className="btn btn-sm btn-light" onClick={fetchInvoice}>
+              Retry
+            </button>
+          </div>
+        )}
+        {invoice && !loading && (
+          <div
+            className="card shadow border-0 mb-5"
+            style={{ maxWidth: '800px', margin: '0 auto' }}
+          >
+            <div className="card-body p-4 p-md-5">
+              {/* Invoice Header */}
+              <div className="row mb-5">
+                <div className="col-md-6">
+                  <h1 className="h2 fw-bold text-primary mb-1">INVOICE</h1>
+                  <div className="text-muted">#{invoice.id}</div>
+                </div>
+                <div className="col-md-6 text-md-end">
+                  <div className="mb-2">
+                    <span
+                      className={`badge ${
+                        invoice.finalized
+                          ? invoice.paid
+                            ? 'bg-success'
+                            : 'bg-warning'
+                          : 'bg-secondary'
+                      } fs-6 px-3 py-2`}
+                    >
+                      {invoice.finalized
+                        ? invoice.paid
+                          ? 'PAID'
+                          : 'FINALIZED'
+                        : 'DRAFT'}
+                    </span>
                   </div>
-                  <div>
-                    <strong>Date:</strong> {invoice.date || '—'}
-                  </div>
-                  <div>
-                    <strong>Deadline:</strong> {invoice.deadline || '—'}
+                  <div className="small">
+                    <div>
+                      <strong>Date:</strong> {invoice.date || '—'}
+                    </div>
+                    <div>
+                      <strong>Due:</strong> {invoice.deadline || '—'}
+                    </div>
                   </div>
                 </div>
-                <div className="mb-3 small">
-                  <div>
-                    <strong>Net (Excl Tax):</strong> {formatCurrency(net)}
-                  </div>
-                  <div>
-                    <strong>Tax (VAT):</strong> {formatCurrency(totals.tax)}
-                  </div>
-                  <div>
-                    <strong>Total (Incl):</strong>{' '}
-                    {formatCurrency(totals.total)}
-                  </div>
-                </div>
-                <div className="d-flex flex-wrap gap-2">
-                  <button
-                    className="btn btn-success btn-sm"
-                    disabled={invoice.paid || updating}
-                    onClick={markPaid}
-                  >
-                    {invoice.paid
-                      ? 'Paid'
-                      : updating
-                      ? 'Marking'
-                      : 'Mark as Paid'}
-                  </button>
+              </div>
 
-                  <button
-                    className="btn btn-warning btn-sm"
-                    disabled={invoice.finalized || updating}
-                    onClick={finalizeInvoice}
-                  >
-                    {invoice.finalized
-                      ? 'Finalized'
-                      : updating
-                      ? 'Finalizing'
-                      : 'Finalize Invoice'}
-                  </button>
-
-                  <button
-                    className="btn btn-danger btn-sm"
-                    disabled={updating}
-                    onClick={deleteInvoice}
-                  >
-                    {updating ? 'Deleting' : 'Delete Invoice'}
-                  </button>
+              {/* Customer Information */}
+              <div className="row mb-5">
+                <div className="col-md-6">
+                  <h6 className="text-uppercase text-muted mb-3 fw-semibold">
+                    Bill To
+                  </h6>
+                  {invoice.customer ? (
+                    <div>
+                      <div className="fw-semibold fs-5 mb-2">
+                        {invoice.customer.first_name}{' '}
+                        {invoice.customer.last_name}
+                      </div>
+                      <div className="text-muted">
+                        <div>{invoice.customer.address}</div>
+                        <div>
+                          {invoice.customer.zip_code} {invoice.customer.city}
+                        </div>
+                        <div>{invoice.customer.country}</div>
+                      </div>
+                      <div className="text-muted small mt-2">
+                        Customer ID: {invoice.customer.id}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-muted">No customer information</div>
+                  )}
                 </div>
-                {updating && (
-                  <span className="ms-2 spinner-border spinner-border-sm" />
+              </div>
+
+              {/* Invoice Items */}
+              <div className="mb-5">
+                <h6 className="text-uppercase text-muted mb-4 fw-semibold">
+                  Items
+                </h6>
+                {invoice.invoice_lines.length === 0 && (
+                  <div className="text-muted">No items</div>
                 )}
-                {error && !loading && !updating && (
-                  <div className="text-danger small mt-2">{error}</div>
+                {invoice.invoice_lines.length > 0 && (
+                  <div>
+                    {invoice.invoice_lines.map((line) => {
+                      const unitPrice =
+                        Number(line.price ?? 0) / Number(line.quantity ?? 1)
+                      const lineTotal = Number(line.price ?? 0)
+                      const tax = Number(line.tax ?? 0)
+                      const vatRate = Number(line.vat_rate ?? 0)
+                      return (
+                        <div
+                          key={line.id}
+                          className="d-flex justify-content-between align-items-start py-3 border-bottom"
+                        >
+                          <div className="flex-grow-1">
+                            <div className="fw-semibold mb-1 fs-6">
+                              {line.label}
+                            </div>
+                            <div className="text-muted small mb-1">
+                              {line.quantity} × {formatCurrency(unitPrice)}{' '}
+                              piece
+                            </div>
+                            <div className="text-muted small">
+                              VAT: {vatRate}% • Tax: {formatCurrency(tax)}
+                            </div>
+                          </div>
+                          <div className="fw-bold fs-5 ms-3">
+                            {formatCurrency(lineTotal)}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 )}
               </div>
-            </div>
-            <div className="card shadow-sm">
-              <div className="card-body">
-                <h6 className="card-subtitle text-uppercase text-muted mb-3">
-                  Customer
-                </h6>
-                {invoice.customer ? (
-                  <div className="small">
-                    <div className="fw-semibold">
-                      {invoice.customer.first_name} {invoice.customer.last_name}
+
+              {/* Totals Section */}
+              <div className="row justify-content-end">
+                <div className="col-md-5">
+                  <div className="border-top pt-3">
+                    <div className="d-flex justify-content-between py-2">
+                      <span>Subtotal:</span>
+                      <span>{formatCurrency(net)}</span>
                     </div>
-                    <div>{invoice.customer.address}</div>
-                    <div>
-                      {invoice.customer.zip_code} {invoice.customer.city}
+                    <div className="d-flex justify-content-between py-2">
+                      <span>Tax:</span>
+                      <span>{formatCurrency(totals.tax)}</span>
                     </div>
-                    <div>{invoice.customer.country}</div>
-                    <div className="text-muted mt-2">
-                      ID: {invoice.customer.id}
+                    <div className="d-flex justify-content-between py-3 border-top">
+                      <span className="fw-bold fs-5">Total:</span>
+                      <span className="fw-bold fs-5 text-primary">
+                        {formatCurrency(totals.total)}
+                      </span>
                     </div>
                   </div>
-                ) : (
-                  <div className="text-muted small">No customer</div>
-                )}
+                </div>
               </div>
             </div>
           </div>
-          <div className="col-lg-8">
-            <div className="card shadow-sm h-100">
-              <div className="card-body d-flex flex-column">
-                <h6 className="card-subtitle text-uppercase text-muted mb-3">
-                  Line Items
-                </h6>
-                {invoice.invoice_lines.length === 0 && (
-                  <div className="text-muted small">No items</div>
-                )}
-                {invoice.invoice_lines.length > 0 && (
-                  <div className="table-responsive mb-3">
-                    <table className="table table-sm align-middle">
-                      <thead className="table-light">
-                        <tr>
-                          <th style={{ width: '40%' }}>Label</th>
-                          <th className="text-end">Qty</th>
-                          <th className="text-end">VAT%</th>
-                          <th className="text-end">Price (Incl)</th>
-                          <th className="text-end">Tax</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {invoice.invoice_lines.map((line) => {
-                          const price = Number(line.price ?? 0)
-                          const tax = Number(line.tax ?? 0)
-                          return (
-                            <tr key={line.id}>
-                              <td>{line.label}</td>
-                              <td className="text-end">{line.quantity}</td>
-                              <td className="text-end">{line.vat_rate}</td>
-                              <td className="text-end">
-                                {formatCurrency(price)}
-                              </td>
-                              <td className="text-end">
-                                {formatCurrency(tax)}
-                              </td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-                <div className="mt-auto small border-top pt-3">
-                  <div className="d-flex justify-content-between">
-                    <span>Net (Excl Tax)</span>
-                    <span>{formatCurrency(net)}</span>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <span>Tax (VAT)</span>
-                    <span>{formatCurrency(totals.tax)}</span>
-                  </div>
-                  <div className="d-flex justify-content-between fw-semibold">
-                    <span>Total (Incl)</span>
-                    <span>{formatCurrency(totals.total)}</span>
-                  </div>
+        )}
+      </div>
+
+      {/* Actions - sticky */}
+      {invoice && !loading && (
+        <div
+          className="position-fixed bottom-0 start-0 end-0 bg-white border-top shadow-sm"
+          style={{ zIndex: 1020 }}
+        >
+          <div className="container py-3">
+            <div className="d-flex justify-content-center gap-5 flex-wrap">
+              <button
+                className="btn btn-outline-danger px-5"
+                disabled={updating}
+                onClick={deleteInvoice}
+              >
+                {updating ? 'Deleting...' : 'Delete Invoice'}
+              </button>
+              <button
+                className="btn btn-outline-primary px-5"
+                disabled={invoice.finalized || updating}
+                onClick={finalizeInvoice}
+              >
+                {invoice.finalized
+                  ? 'Finalized'
+                  : updating
+                  ? 'Finalizing...'
+                  : 'Finalize Invoice'}
+              </button>
+              <button
+                className="btn btn-success px-5"
+                disabled={invoice.paid || updating}
+                onClick={markPaid}
+              >
+                {invoice.paid
+                  ? 'Paid'
+                  : updating
+                  ? 'Marking...'
+                  : 'Mark as Paid'}
+              </button>
+              {updating && (
+                <div className="d-flex align-items-center">
+                  <span className="spinner-border spinner-border-sm" />
                 </div>
-              </div>
+              )}
             </div>
+            {error && !loading && !updating && (
+              <div className="text-center text-danger small mt-2">{error}</div>
+            )}
           </div>
         </div>
       )}

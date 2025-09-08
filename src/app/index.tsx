@@ -4,6 +4,7 @@ import App from './App'
 import { ApiProvider } from '../api'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '../custom-bootstrap.css'
 
 const domRoot = document.getElementById('root')
 const root = createRoot(domRoot!)
