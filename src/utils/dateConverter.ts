@@ -1,11 +1,23 @@
 //date is receieved as
 // YYYY-MM-DD or null/undefined
-// returns in locale format or '-' if invalid
+// returns in good format or '-' if invalid
 export const convertDate = (dateStr: string | null | undefined): string => {
   if (!dateStr) return '-'
-  //return as number (no 0s) wiht the three letter abbrieviation of the month and full year
-  const date = new Date(dateStr + 'T00:00:00') // Ensure it's treated as UTC
+
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/
+  if (!datePattern.test(dateStr)) return '-'
+
+  const date = new Date(dateStr)
   if (isNaN(date.getTime())) return '-'
+
+  const [year, month, day] = dateStr.split('-').map(Number)
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() + 1 !== month ||
+    date.getDate() !== day
+  ) {
+    return '-'
+  }
 
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
