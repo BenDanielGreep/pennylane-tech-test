@@ -2,6 +2,7 @@ import { Invoice } from 'types'
 import { calcInvoiceTotals } from 'utils/invoiceTotals'
 import { formatCurrency } from 'utils/currency'
 import { Link } from 'react-router-dom'
+import { convertDate } from 'utils/dateConverter'
 
 interface InvoiceTableProps {
   invoices: Invoice[]
@@ -15,43 +16,39 @@ const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
           <table className="table table-hover mb-0">
             <thead className="table-secondary">
               <tr>
-                <th className="border-0 py-2 py-md-3 px-3 px-md-4 small w-auto">
-                  ID
-                </th>
-                <th className="border-0 py-2 py-md-3 px-2 small">Customer</th>
-                <th className="border-0 py-2 py-md-3 px-2 small d-none d-lg-table-cell">
-                  Address
-                </th>
-                <th className="border-0 py-2 py-md-3 px-2 text-end small">
-                  Total
-                </th>
-                <th className="border-0 py-2 py-md-3 px-2 text-end small d-none d-md-table-cell">
-                  Tax
-                </th>
-                <th className="border-0 py-2 py-md-3 px-2 text-center small d-none d-sm-table-cell">
-                  Status
-                </th>
-                <th className="border-0 py-2 py-md-3 px-2 small d-none d-xl-table-cell">
+                <th className="border-0 py-2 py-md-3 px-3 small d-none d-md-table-cell">
                   Date
                 </th>
-                <th className="border-0 py-2 py-md-3 px-2 small d-none d-xl-table-cell">
+                <th className="border-0 py-2 py-md-3 px-3 small d-none d-md-table-cell">
                   Deadline
                 </th>
-                <th className="border-0 py-2 py-md-3 px-4 small w-auto">
-                  Actions
+                <th className="border-0 py-2 py-md-3 px-3 small w-25">
+                  Customer
                 </th>
+                <th className="border-0 py-2 py-md-3 px-3 small">ID</th>
+                <th className="border-0 py-2 py-md-3 px-3 text-end small">
+                  Total
+                </th>
+                <th className="border-0 py-2 py-md-3 px-3 text-center small d-none d-sm-table-cell">
+                  Status
+                </th>
+                <th className="border-0 py-2 py-md-3 px-3 small">Actions</th>
               </tr>
             </thead>
             <tbody>
               {invoices?.map((invoice) => {
-                const { total, tax } = calcInvoiceTotals(invoice)
+                const { total } = calcInvoiceTotals(invoice)
                 const isPaid = invoice.paid
+                const sanitisedDate = convertDate(invoice.date)
                 return (
                   <tr key={invoice.id} className="border-bottom">
-                    <td className="py-2 py-md-3 px-3 px-md-4 fw-medium small">
-                      {invoice.id}
+                    <td className="py-2 py-md-3 px-3 small d-none d-md-table-cell">
+                      {sanitisedDate}
                     </td>
-                    <td className="py-2 py-md-3 px-2">
+                    <td className="py-2 py-md-3 px-3 small d-none d-md-table-cell">
+                      {convertDate(invoice.deadline)}
+                    </td>
+                    <td className="py-2 py-md-3 px-3">
                       <div className="small fw-medium">
                         {invoice.customer?.first_name}{' '}
                         {invoice.customer?.last_name}
@@ -63,40 +60,22 @@ const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
                         {invoice.customer?.city}
                       </div>
                     </td>
-                    <td className="py-2 py-md-3 px-2 text-muted small d-none d-lg-table-cell">
-                      {invoice.customer?.address}, {invoice.customer?.zip_code}{' '}
-                      {invoice.customer?.city}
+                    <td className="py-2 py-md-3 px-3 fw-medium small">
+                      {invoice.id}
                     </td>
-                    <td className="py-2 py-md-3 px-2 text-end fw-bold small">
+                    <td className="py-2 py-md-3 px-3 text-end fw-bold small">
                       {formatCurrency(invoice.total ?? total)}
-                      <div
-                        className="d-md-none text-muted"
-                        style={{ fontSize: '0.7rem' }}
-                      >
-                        Tax: {formatCurrency(invoice.tax ?? tax)}
-                      </div>
                     </td>
-                    <td className="py-2 py-md-3 px-2 text-end small d-none d-md-table-cell">
-                      {formatCurrency(invoice.tax ?? tax)}
-                    </td>
-                    <td className="py-2 py-md-3 px-2 text-center d-none d-sm-table-cell">
+                    <td className="py-2 py-md-3 px-3 text-center d-none d-sm-table-cell">
                       <div className="d-flex flex-column gap-1">
-                        <span
-                          className={`badge badge-sm ${
-                            isPaid ? 'bg-primary' : 'bg-warning'
-                          }`}
-                        >
-                          {isPaid ? 'Paid' : 'Pending'}
-                        </span>
+                        {isPaid && (
+                          <span className="badge badge-sm bg-primary">
+                            Paid
+                          </span>
+                        )}
                       </div>
                     </td>
-                    <td className="py-2 py-md-3 px-2 small d-none d-xl-table-cell">
-                      {invoice.date}
-                    </td>
-                    <td className="py-2 py-md-3 px-2 small d-none d-xl-table-cell">
-                      {invoice.deadline}
-                    </td>
-                    <td className="py-2 py-md-3 px-4 small">
+                    <td className="py-2 py-md-3 px-3 small">
                       <div className="d-flex gap-1">
                         <Link
                           to={`/invoice/${invoice.id}`}
