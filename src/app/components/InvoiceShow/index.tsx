@@ -206,7 +206,7 @@ const InvoiceShow = () => {
               </button>
               <button
                 className="btn btn-success px-5"
-                disabled={invoice.paid || updating}
+                disabled={invoice.paid || updating || !invoice.finalized}
                 onClick={markPaid}
               >
                 {invoice.paid
