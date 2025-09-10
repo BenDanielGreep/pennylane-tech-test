@@ -19,5 +19,3 @@ root.render(
     </ApiProvider>
   </React.StrictMode>
 )
-
-console.log('✅ React app rendered')
