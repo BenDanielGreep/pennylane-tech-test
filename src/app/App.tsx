@@ -5,7 +5,6 @@ import InvoiceShow from './components/InvoiceShow'
 import InvoiceCreate from './components/InvoiceCreate'
 
 function App() {
-  // Get the basename from package.json homepage or default to root
   const basename = process.env.PUBLIC_URL || ''
 
   return (
