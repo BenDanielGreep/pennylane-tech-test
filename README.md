@@ -4,6 +4,8 @@
 
 This app came with a simple table display so I had to add a **Create page** and a **View page**. The invoices can be marked 'finalised' or 'paid' and deleted on the View page. I use the prebuilt components on the Create page to create invoices and send them to the API.
 
+
+
 ### Architecture & Components
 
 - **PageHeader Component**: Added a reusable PageHeader component (with tests) that can be used across the app, fitting with React's component-based architecture
@@ -15,6 +17,12 @@ This app came with a simple table display so I had to add a **Create page** and 
 
 - **Logic Extraction**: Extracted logic from InvoiceShow, InvoiceCreate and InvoicesList into custom hooks, keeping business logic separated from rendering logic
 - **Component Separation**: Extracted the table component into its own directory in line with React principles
+
+### Added tech
+
+I had to install axios directly in order to get the app running - the API client wouldn't instantiate with the existing OpenAPIClient setup. 
+I installed 'axe' for accessibility testing.
+I installed gh-pages for quick deployment to GitHub pages
 
 ## Potential Improvements
 
