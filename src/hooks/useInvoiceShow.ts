@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useApi } from 'api'
 import { Invoice } from 'types'
 import { calcInvoiceTotals } from 'utils/invoiceTotals'
 
 export const useInvoiceShow = () => {
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const api = useApi()
   const [invoice, setInvoice] = useState<Invoice>()
   const [loading, setLoading] = useState(true)
@@ -74,7 +75,7 @@ export const useInvoiceShow = () => {
     setError(null)
     try {
       await api.deleteInvoice(invoice.id)
-      window.location.href = '/'
+      navigate('/')
     } catch (e: any) {
       setError(e?.message || 'Failed to delete invoice')
       setUpdating(false)
