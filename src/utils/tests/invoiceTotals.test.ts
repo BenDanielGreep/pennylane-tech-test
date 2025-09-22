@@ -13,7 +13,7 @@ const makeInvoice = (partial: Partial<Invoice>): Invoice => {
     tax: partial.tax ?? null,
     invoice_lines: partial.invoice_lines ?? [],
     customer: partial.customer,
-  } as Invoice
+  }
 }
 
 describe('calcInvoiceTotals', () => {
