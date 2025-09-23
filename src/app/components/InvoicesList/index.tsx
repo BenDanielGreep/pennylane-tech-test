@@ -4,6 +4,9 @@ import Tabs from '../Tabs'
 import InvoiceTable from '../InvoiceTable'
 import { getInvoiceCount, type InvoiceFilter } from 'utils/invoiceFilters'
 import { useInvoicesList } from 'hooks/useInvoicesList'
+import CustomerAutocomplete from 'app/components/InvoiceCreate/CustomerAutocomplete'
+import { useState } from 'react'
+import { type Customer } from 'types'
 
 const InvoicesList = (): React.ReactElement => {
   const {
@@ -14,7 +17,12 @@ const InvoicesList = (): React.ReactElement => {
     page,
     setPage,
     pagination,
+    setCustomerId,
   } = useInvoicesList()
+
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null
+  )
 
   const tabs = [
     {
@@ -50,6 +58,28 @@ const InvoicesList = (): React.ReactElement => {
 
       <div className="row">
         <div className="col">
+          <div className="d-flex align-items-center mb-3 gap-2">
+            <div>
+              <CustomerAutocomplete
+                value={selectedCustomer}
+                onChange={(customer) => {
+                  setSelectedCustomer(customer)
+                  setCustomerId(customer ? customer.id : null)
+                }}
+              />
+            </div>
+            {selectedCustomer && (
+              <button
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => {
+                  setSelectedCustomer(null)
+                  setCustomerId(null)
+                }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <Tabs
             tabs={tabs}
             activeTab={activeTab}

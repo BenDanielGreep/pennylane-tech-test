@@ -17,12 +17,19 @@ export const useInvoicesList = () => {
   const [page, setPage] = useState<number>(1)
   const [pageSize] = useState<number>(10)
   const [pagination, setPagination] = useState<PaginationInfo | null>(null)
+  const [customerId, setCustomerIdState] = useState<number | null>(null)
 
   const fetchInvoices = useCallback(async () => {
-    const { data } = await api.getInvoices({ page, per_page: pageSize })
+    const params: any = { page, per_page: pageSize }
+    if (customerId) {
+      params.filter = JSON.stringify([
+        { field: 'customer_id', operator: 'eq', value: customerId },
+      ])
+    }
+    const { data } = await api.getInvoices(params)
     setInvoicesList(data.invoices)
     setPagination(data.pagination)
-  }, [api, page, pageSize])
+  }, [api, page, pageSize, customerId])
 
   useEffect(() => {
     fetchInvoices()
@@ -30,6 +37,11 @@ export const useInvoicesList = () => {
 
   const setActiveTab = useCallback((tab: InvoiceFilter) => {
     setActiveTabState(tab)
+    setPage(1)
+  }, [])
+
+  const setCustomerId = useCallback((id: number | null) => {
+    setCustomerIdState(id)
     setPage(1)
   }, [])
 
@@ -45,5 +57,7 @@ export const useInvoicesList = () => {
     setPage,
     pagination,
     pageSize,
+    customerId,
+    setCustomerId,
   }
 }
