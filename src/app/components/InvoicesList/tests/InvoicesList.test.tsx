@@ -10,6 +10,10 @@ jest.mock('hooks/useInvoicesList', () => ({
   useInvoicesList: jest.fn(),
 }))
 
+jest.mock('app/components/InvoiceCreate/CustomerAutocomplete', () => () => (
+  <div data-testid="customer-autocomplete" />
+))
+
 const setupMock = (overrides?: Partial<ReturnType<typeof useInvoicesList>>) => {
   const setPage = jest.fn()
   const base: any = {
@@ -22,6 +26,7 @@ const setupMock = (overrides?: Partial<ReturnType<typeof useInvoicesList>>) => {
     pagination: { page: 1, page_size: 10, total_pages: 3, total_entries: 25 },
     pageSize: 10,
     fetchInvoices: jest.fn(),
+    setCustomerId: jest.fn(),
   }
   ;(useInvoicesList as jest.Mock).mockReturnValue({ ...base, ...overrides })
   return { setPage }
