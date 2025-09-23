@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { formatCurrency } from 'utils/currency'
 import PageHeader from '../PageHeader'
 import { useInvoiceShow } from 'hooks/useInvoiceShow'
 
 const InvoiceShow = () => {
+  const navigate = useNavigate()
   const {
     invoice,
     loading,
@@ -186,6 +187,15 @@ const InvoiceShow = () => {
         >
           <div className="container py-3">
             <div className="d-flex justify-content-center gap-5 flex-wrap">
+              {!!invoice && !invoice.finalized && !invoice.paid && (
+                <button
+                  className="btn btn-outline-secondary px-5"
+                  disabled={updating}
+                  onClick={() => navigate(`/invoice/${invoice.id}/edit`)}
+                >
+                  Edit invoice
+                </button>
+              )}
               <button
                 className="btn btn-outline-danger px-5"
                 disabled={updating}
