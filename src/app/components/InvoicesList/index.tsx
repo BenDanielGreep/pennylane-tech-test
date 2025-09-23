@@ -6,8 +6,15 @@ import { getInvoiceCount, type InvoiceFilter } from 'utils/invoiceFilters'
 import { useInvoicesList } from 'hooks/useInvoicesList'
 
 const InvoicesList = (): React.ReactElement => {
-  const { invoicesList, activeTab, setActiveTab, filteredInvoices } =
-    useInvoicesList()
+  const {
+    invoicesList,
+    activeTab,
+    setActiveTab,
+    filteredInvoices,
+    page,
+    setPage,
+    pagination,
+  } = useInvoicesList()
 
   const tabs = [
     {
@@ -48,6 +55,34 @@ const InvoicesList = (): React.ReactElement => {
             activeTab={activeTab}
             onTabChange={(tabId) => setActiveTab(tabId as InvoiceFilter)}
           />
+          {pagination && (
+            <div className="d-flex justify-content-between align-items-center mt-3">
+              <div className="text-muted small">
+                Page {pagination.page} of {pagination.total_pages} •{' '}
+                {pagination.total_entries} total
+              </div>
+              <div className="btn-group">
+                <button
+                  className="btn btn-outline-secondary btn-sm"
+                  onClick={() => setPage(Math.max(1, page - 1))}
+                  disabled={page <= 1}
+                >
+                  ‹ Prev
+                </button>
+                <button
+                  className="btn btn-outline-secondary btn-sm"
+                  onClick={() =>
+                    setPage(
+                      pagination.page < pagination.total_pages ? page + 1 : page
+                    )
+                  }
+                  disabled={pagination.page >= pagination.total_pages}
+                >
+                  Next ›
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
