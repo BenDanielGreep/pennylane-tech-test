@@ -231,9 +231,6 @@ const InvoiceShow = () => {
                 </div>
               )}
             </div>
-            {error && !loading && !updating && (
-              <div className="text-center text-danger small mt-2">{error}</div>
-            )}
           </div>
         </div>
       )}
