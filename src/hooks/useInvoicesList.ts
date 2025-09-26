@@ -18,7 +18,8 @@ export const useInvoicesList = () => {
   const [pageSize] = useState<number>(10)
   const [pagination, setPagination] = useState<PaginationInfo | null>(null)
   const [customerId, setCustomerIdState] = useState<number | null>(null)
-
+  const [startDate, setStartDate] = useState<string | null>(null)
+  const [endDate, setEndDate] = useState<string | null>(null)
 
   const [sortValue, setSortValue] = useState<string | null>(null)
 
@@ -29,22 +30,42 @@ export const useInvoicesList = () => {
 
   const fetchInvoices = useCallback(async () => {
     const params: any = { page, per_page: pageSize }
-    if (customerId) {
-      params.filter = JSON.stringify([
-        { field: 'customer_id', operator: 'eq', value: customerId },
-      ])
+    const filterConditions: any[] = []
+    if (startDate) {
+      filterConditions.push({
+        field: 'deadline',
+        operator: 'gteq',
+        value: startDate,
+      })
     }
+    if (endDate) {
+      filterConditions.push({
+        field: 'deadline',
+        operator: 'lteq',
+        value: endDate,
+      })
+    }
+    if (customerId != null) {
+      filterConditions.push({
+        field: 'customer_id',
+        operator: 'eq',
+        value: customerId,
+      })
+    }
+    if (filterConditions.length)
+      params.filter = JSON.stringify(filterConditions)
     const sortParam = buildSortParam()
     if (sortParam) params.sort = sortParam
     console.log('[InvoicesList] fetch params', {
       sortValue,
       appliedSort: params.sort,
       customerId,
-      minTotal,
-      maxTotal,
+      startDate,
+      endDate,
       rawParams: params,
     })
     const { data } = await api.getInvoices(params)
+
     setInvoicesList(data.invoices)
     setPagination(data.pagination)
   }, [
@@ -52,6 +73,8 @@ export const useInvoicesList = () => {
     page,
     pageSize,
     customerId,
+    startDate,
+    endDate,
     buildSortParam,
     sortValue,
   ])
@@ -92,7 +115,10 @@ export const useInvoicesList = () => {
     pageSize,
     customerId,
     setCustomerId,
-   
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
     sortValue,
     setSortValue,
     toggleSort,

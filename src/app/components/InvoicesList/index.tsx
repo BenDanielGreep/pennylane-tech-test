@@ -8,6 +8,7 @@ import CustomerAutocomplete from 'app/components/InvoiceCreate/CustomerAutocompl
 import { useState } from 'react'
 import { type Customer } from 'types'
 import SortBy from '../SortBy/SortBy'
+import DateRangeFilter from '../DateRangeFilter/DateRangeFilter'
 
 const InvoicesList = (): React.ReactElement => {
   const {
@@ -20,6 +21,10 @@ const InvoicesList = (): React.ReactElement => {
     pagination,
     setCustomerId,
     toggleSort,
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
   } = useInvoicesList()
 
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
@@ -58,32 +63,44 @@ const InvoicesList = (): React.ReactElement => {
         }
       />
 
-      <div className="row">
-        <div className="col">
-          <div className="d-flex align-items-center mb-3 gap-2">
-            <div>
-              <CustomerAutocomplete
-                value={selectedCustomer}
-                onChange={(customer) => {
-                  setSelectedCustomer(customer)
-                  setCustomerId(customer ? customer.id : null)
+      <div className="d-flex col">
+        <div className="row">
+          <div className="d-flex align-items-center justify-content-between mb-4 pb-4 gap-4">
+            <div className="d-flex row justify-content-start flex-nowrap align-items-center">
+              <div className="w-auto mb-2">
+                <p className="small text-muted mb-1">Filter by customer:</p>
+                <CustomerAutocomplete
+                  value={selectedCustomer}
+                  onChange={(customer) => {
+                    setSelectedCustomer(customer)
+                    setCustomerId(customer ? customer.id : null)
+                  }}
+                />
+              </div>
+              {selectedCustomer && (
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => {
+                    setSelectedCustomer(null)
+                    setCustomerId(null)
+                  }}
+                >
+                  Clear
+                </button>
+              )}
+              <DateRangeFilter
+                start={startDate}
+                end={endDate}
+                onChange={(s, e) => {
+                  setStartDate(s)
+                  setEndDate(e)
+                  setPage(1)
                 }}
               />
             </div>
-            {selectedCustomer && (
-              <button
-                className="btn btn-sm btn-outline-secondary"
-                onClick={() => {
-                  setSelectedCustomer(null)
-                  setCustomerId(null)
-                }}
-              >
-                Clear
-              </button>
-            )}
-           
             <SortBy toggleSort={toggleSort} />
           </div>
+
           <Tabs
             tabs={tabs}
             activeTab={activeTab}
