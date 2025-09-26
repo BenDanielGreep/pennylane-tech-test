@@ -2,7 +2,7 @@
 
 ## Features
 
-This app came with a simple table display so I had to add a **Create page** and a **View page**. The invoices can be marked 'finalised' or 'paid' and deleted on the View page. I use the prebuilt components on the Create page to create invoices and send them to the API.
+This app came with a simple table display so I had to add a **Create page** and a **View page**. The invoices can be marked 'finalised' or 'paid' and deleted on the View page. I used the prebuilt components on the Create page to create invoices and send them to the API.
 
 - **Pagination**: Added server-side pagination using the API's pagination, keeping the UI minimal.
 
@@ -30,6 +30,13 @@ I installed gh-pages for quick deployment to GitHub pages
 
 ### Features
 
+- **Edit Invoice** before finalisation
+- **Custom modal dialogs** for notifications, warnings and errors
+- **Sidebar menu** with navigation options
+- **Advanced Filtering** by various facets (customer, orderId, product, date, etc.)
+- **Export invoice as PDF** functionality
+- **Enhanced Create Invoice** features including custom tax, layout options, email integration
+- **Loading skeleton** for better FirstContentfulPaint
 - **Edit Invoice** before finalisation
 - **Custom modal dialogs** for notifications, warnings and errors
 - **Sidebar menu** with navigation options
