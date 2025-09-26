@@ -6,7 +6,8 @@ interface SortByProps {
 
 const SortBy: React.FC<SortByProps> = ({ toggleSort }) => {
   return (
-    <div className="mb-2" data-testid="sortby-component">
+    <div data-testid="sortby-component">
+      <p className="small text-muted mb-1">Sort by:</p>
       <select
         className="btn btn-sm btn-outline-secondary"
         onChange={(e) => toggleSort(e.target.value)}
