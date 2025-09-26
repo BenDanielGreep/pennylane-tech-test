@@ -19,6 +19,14 @@ export const useInvoicesList = () => {
   const [pagination, setPagination] = useState<PaginationInfo | null>(null)
   const [customerId, setCustomerIdState] = useState<number | null>(null)
 
+
+  const [sortValue, setSortValue] = useState<string | null>(null)
+
+  const buildSortParam = useCallback(
+    () => (sortValue ? sortValue : undefined),
+    [sortValue]
+  )
+
   const fetchInvoices = useCallback(async () => {
     const params: any = { page, per_page: pageSize }
     if (customerId) {
@@ -26,10 +34,27 @@ export const useInvoicesList = () => {
         { field: 'customer_id', operator: 'eq', value: customerId },
       ])
     }
+    const sortParam = buildSortParam()
+    if (sortParam) params.sort = sortParam
+    console.log('[InvoicesList] fetch params', {
+      sortValue,
+      appliedSort: params.sort,
+      customerId,
+      minTotal,
+      maxTotal,
+      rawParams: params,
+    })
     const { data } = await api.getInvoices(params)
     setInvoicesList(data.invoices)
     setPagination(data.pagination)
-  }, [api, page, pageSize, customerId])
+  }, [
+    api,
+    page,
+    pageSize,
+    customerId,
+    buildSortParam,
+    sortValue,
+  ])
 
   useEffect(() => {
     fetchInvoices()
@@ -42,6 +67,14 @@ export const useInvoicesList = () => {
 
   const setCustomerId = useCallback((id: number | null) => {
     setCustomerIdState(id)
+    setPage(1)
+  }, [])
+
+  const toggleSort = useCallback((field: string) => {
+    setSortValue((prev) => {
+      if (prev === field) return null
+      return field
+    })
     setPage(1)
   }, [])
 
@@ -59,5 +92,10 @@ export const useInvoicesList = () => {
     pageSize,
     customerId,
     setCustomerId,
+   
+    sortValue,
+    setSortValue,
+    toggleSort,
+    buildSortParam,
   }
 }

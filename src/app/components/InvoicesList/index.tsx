@@ -7,6 +7,7 @@ import { useInvoicesList } from 'hooks/useInvoicesList'
 import CustomerAutocomplete from 'app/components/InvoiceCreate/CustomerAutocomplete'
 import { useState } from 'react'
 import { type Customer } from 'types'
+import SortBy from '../SortBy/SortBy'
 
 const InvoicesList = (): React.ReactElement => {
   const {
@@ -18,6 +19,7 @@ const InvoicesList = (): React.ReactElement => {
     setPage,
     pagination,
     setCustomerId,
+    toggleSort,
   } = useInvoicesList()
 
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
@@ -79,6 +81,8 @@ const InvoicesList = (): React.ReactElement => {
                 Clear
               </button>
             )}
+           
+            <SortBy toggleSort={toggleSort} />
           </div>
           <Tabs
             tabs={tabs}
