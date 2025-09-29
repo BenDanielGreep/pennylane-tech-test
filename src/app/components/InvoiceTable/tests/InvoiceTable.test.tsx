@@ -126,13 +126,20 @@ describe('InvoiceTable', () => {
     expect(screen.getAllByText('Paid')).toHaveLength(1)
   })
 
-  it('shows Finalized badge only for finalized invoices (row also has Paid)', () => {
+  it('shows Paid badge only for finalized invoices which are paid', () => {
     setup()
     const rows = screen.getAllByRole('row')
     const finalizedRow = rows.find((r) => /54321/.test(r.textContent || ''))
     expect(finalizedRow).toBeTruthy()
-    expect(finalizedRow).toHaveTextContent('Finalized')
     expect(finalizedRow).toHaveTextContent('Paid')
+    expect(screen.getAllByText('Paid')).toHaveLength(1)
+  })
+  it('does  show Finalized badge for finalized invoices which are not paid', () => {
+    setup()
+    const rows = screen.getAllByRole('row')
+    const finalizedRow = rows.find((r) => /54324/.test(r.textContent || ''))
+    expect(finalizedRow).toBeTruthy()
+    expect(finalizedRow).toHaveTextContent('Finalized')
     expect(screen.getAllByText('Finalized')).toHaveLength(1)
   })
 
