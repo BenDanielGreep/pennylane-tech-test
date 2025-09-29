@@ -35,9 +35,6 @@ const InvoiceShow = () => {
         {error && !loading && (
           <div className="alert alert-danger d-flex justify-content-between align-items-center">
             <span>{error}</span>
-            <button className="btn btn-sm btn-light" onClick={fetchInvoice}>
-              Retry
-            </button>
           </div>
         )}
         {invoice && !loading && (
@@ -196,13 +193,15 @@ const InvoiceShow = () => {
                   Edit invoice
                 </button>
               )}
-              <button
-                className="btn btn-outline-danger px-5"
-                disabled={updating}
-                onClick={deleteInvoice}
-              >
-                {updating ? 'Deleting...' : 'Delete Invoice'}
-              </button>
+              {!!invoice && !invoice.finalized && !invoice.paid && (
+                <button
+                  className="btn btn-outline-danger px-5"
+                  disabled={updating}
+                  onClick={deleteInvoice}
+                >
+                  {updating ? 'Deleting...' : 'Delete Invoice'}
+                </button>
+              )}
               <button
                 className="btn btn-outline-primary px-5"
                 disabled={invoice.finalized || updating}
