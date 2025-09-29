@@ -1,97 +1,10 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'
-import type { Invoice } from 'types'
 import InvoiceTable from '../index'
+import { invoiceTableInvoices } from 'test/fixtures/invoices'
 
-const mockInvoices: Invoice[] = [
-  {
-    id: 54321,
-    customer_id: 0,
-    finalized: true,
-    paid: true,
-    date: '2024-01-01',
-    deadline: '2024-01-15',
-    total: '555.00',
-    tax: '0',
-    invoice_lines: [],
-    customer: {
-      first_name: 'Alice',
-      last_name: 'Smith',
-      city: 'London',
-      id: 0,
-      address: '',
-      zip_code: '',
-      country: '',
-      country_code: '',
-    },
-  },
-  {
-    id: 54322,
-    customer_id: 0,
-    finalized: false,
-    paid: false,
-    date: '2024-02-01',
-    deadline: '2024-02-20',
-    total: null,
-    tax: '0',
-    invoice_lines: [
-      {
-        id: 1,
-        invoice_id: 54322,
-        product_id: 1,
-        quantity: 1,
-        label: 'Line A',
-        unit: 'piece',
-        vat_rate: '20',
-        price: '100.00',
-        tax: '0',
-        product: {
-          id: 1,
-          label: 'X',
-          vat_rate: '20',
-          unit: 'piece',
-          unit_price: '0',
-          unit_price_without_tax: '0',
-          unit_tax: '0',
-        },
-      },
-      {
-        id: 2,
-        invoice_id: 54322,
-        product_id: 2,
-        quantity: 1,
-        label: 'Line B',
-        unit: 'piece',
-        vat_rate: '20',
-        price: '23.45',
-        tax: '0',
-        product: {
-          id: 2,
-          label: 'Y',
-          vat_rate: '20',
-          unit: 'piece',
-          unit_price: '0',
-          unit_price_without_tax: '0',
-          unit_tax: '0',
-        },
-      },
-    ],
-    customer: {
-      first_name: 'Bob',
-      last_name: 'Brown',
-      city: 'Paris',
-      id: 0,
-      address: '',
-      zip_code: '',
-      country: '',
-      country_code: '',
-    },
-  },
-]
-
-const setup = (invoices: Invoice[] = mockInvoices) =>
+const setup = (invoices = invoiceTableInvoices) =>
   render(
     <MemoryRouter>
       <InvoiceTable invoices={invoices} />
@@ -113,12 +26,12 @@ describe('InvoiceTable', () => {
 
   it('renders explicit total using real formatter', () => {
     setup()
-    expect(screen.getByText('$555.00')).toBeInTheDocument()
+    expect(screen.getByText('$11,000.00')).toBeInTheDocument()
   })
 
   it('falls back to computed line totals when no invoice.total', () => {
     setup()
-    expect(screen.getByText('$123.45')).toBeInTheDocument()
+    expect(screen.getByText('$62,000.00')).toBeInTheDocument()
   })
 
   it('shows Paid badge only for paid invoices', () => {

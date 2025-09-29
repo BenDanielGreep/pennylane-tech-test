@@ -1,6 +1,3 @@
-//date is receieved as
-// YYYY-MM-DD or null/undefined
-// returns in good format or '-' if invalid
 export const convertDate = (dateStr: string | null | undefined): string => {
   if (!dateStr) return '-'
 
