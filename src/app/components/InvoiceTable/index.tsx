@@ -37,9 +37,14 @@ const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
             </thead>
             <tbody>
               {invoices?.map((invoice) => {
-                const { total } = calcInvoiceTotals(invoice)
+                const computed = calcInvoiceTotals(invoice) || {
+                  total: 0,
+                  tax: 0,
+                }
+                const { total } = computed
                 const isPaid = invoice.paid
                 const sanitisedDate = convertDate(invoice.date)
+                const effectiveTotal = Number(invoice.total ?? total)
                 return (
                   <tr key={invoice.id} className="border-bottom">
                     <td className="py-2 py-md-3 px-3 small d-none d-md-table-cell">
@@ -64,10 +69,15 @@ const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
                       {invoice.id}
                     </td>
                     <td className="py-2 py-md-3 px-3 text-end fw-bold small">
-                      {formatCurrency(invoice.total ?? total)}
+                      {formatCurrency(effectiveTotal)}
                     </td>
                     <td className="py-2 py-md-3 px-3 text-center d-none d-sm-table-cell">
-                      <div className="d-flex flex-column gap-1">
+                      <div className="d-flex flex-column gap-1 align-items-center">
+                        {invoice.finalized && !invoice.paid && (
+                          <span className="badge badge-sm bg-secondary">
+                            Finalized
+                          </span>
+                        )}
                         {isPaid && (
                           <span className="badge badge-sm bg-primary">
                             Paid
@@ -88,6 +98,13 @@ const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
                   </tr>
                 )
               })}
+              {invoices.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="text-muted text-center py-4">
+                    No invoices found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
