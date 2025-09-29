@@ -1,6 +1,6 @@
 import React from 'react'
-import CustomerAutocomplete from './CustomerAutocomplete'
-import ProductAutocomplete from './ProductAutocomplete'
+import CustomerAutocomplete from '../InvoiceFields/CustomerAutocomplete'
+import ProductAutocomplete from '../InvoiceFields/ProductAutocomplete'
 import PageHeader from '../PageHeader'
 import { formatCurrency } from 'utils/currency'
 import { useInvoiceCreation } from '../../../hooks/useInvoiceCreation'
