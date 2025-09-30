@@ -1,5 +1,25 @@
 # Ben Daniel-Greep - Accounting App Prototype
 
+## Update after interview
+
+# New feaures
+
+- Pagination: Users can now paginate and can see 10 results per page.
+- Edit invoice: Users can now edit an invoice (if not paid or finalised). The UI is similar to the create invoice flow (In future these pages could be refactored to derive from a single source).
+- Filters: By customer or by date range. This uses the API filters so that pagination still works. (NB filtering by totals wasn't possible because the totals don't exist on all invoices)
+- Sort By: Users can sort by ID, Date, Deadline or Total, both ascending and desceding. This uses the API so that pagination still functions (NB sorting by total is not great because the totals don't exist on all invoices).
+- ErrorBoundary: used to create safer error handling when api or page errors occur.
+
+# Fixes
+
+- Paid invoices would error when attempting deletion. The API does not allow deletion of paid invoices. Therefore the delete button has been disabled for paid invoices.
+- Homepage: after deleting an invoice, the app would reset to the incorect url. This has been fixed.
+
+# Improvements
+- More test coverage including invoiceTable, invoiceShow, invoiceList, invoiceCreate and all new components.
+- Invoices now have a Finalized tag as well as a Paid tag on the table view. 
+
+
 ## Features
 
 This app came with a simple table display so I had to add a **Create page** and a **View page**. The invoices can be marked 'finalised' or 'paid' and deleted on the View page. I used the prebuilt components on the Create page to create invoices and send them to the API.
