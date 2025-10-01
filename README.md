@@ -1,8 +1,8 @@
-# Ben Daniel-Greep - Accounting App Prototype
+## Ben Daniel-Greep - Accounting App Prototype
 
 ## Update after interview
 
-# New feaures
+### New feaures
 
 - Pagination: Users can now paginate and can see 10 results per page.
 - Edit invoice: Users can now edit an invoice (if not paid or finalised). The UI is similar to the create invoice flow (In future these pages could be refactored to derive from a single source).
@@ -10,17 +10,17 @@
 - Sort By: Users can sort by ID, Date, Deadline or Total, both ascending and desceding. This uses the API so that pagination still functions (NB sorting by total is not great because the totals don't exist on all invoices).
 - ErrorBoundary: used to create safer error handling when api or page errors occur.
 
-# Fixes
+### Fixes
 
 - Paid invoices would error when attempting deletion. The API does not allow deletion of paid invoices. Therefore the delete button has been disabled for paid invoices.
 - Homepage: after deleting an invoice, the app would reset to the incorect url. This has been fixed.
 
-# Improvements
+### Improvements
 - More test coverage including invoiceTable, invoiceShow, invoiceList, invoiceCreate and all new components.
 - Invoices now have a Finalized tag as well as a Paid tag on the table view. 
 
 
-## Features
+### Features
 
 This app came with a simple table display so I had to add a **Create page** and a **View page**. The invoices can be marked 'finalised' or 'paid' and deleted on the View page. I used the prebuilt components on the Create page to create invoices and send them to the API.
 
@@ -50,28 +50,17 @@ I installed gh-pages for quick deployment to GitHub pages
 
 ### Features
 
-- **Edit Invoice** before finalisation
 - **Custom modal dialogs** for notifications, warnings and errors
 - **Sidebar menu** with navigation options
-- **Advanced Filtering** by various facets (customer, orderId, product, date, etc.)
 - **Export invoice as PDF** functionality
 - **Enhanced Create Invoice** features including custom tax, layout options, email integration
 - **Loading skeleton** for better FirstContentfulPaint
-- **Edit Invoice** before finalisation
 - **Custom modal dialogs** for notifications, warnings and errors
-- **Sidebar menu** with navigation options
-- **Advanced Filtering** by various facets (customer, orderId, product, date, etc.)
-- **Export invoice as PDF** functionality
-- **Enhanced Create Invoice** features including custom tax, layout options, email integration
-- **Loading skeleton** for better FirstContentfulPaint
 
 ### Tech Improvements
 
-- **Error Boundary** to catch API/rendering errors
-- **Unit tests** for all components
 - **Integration tests** for larger components
 - **E2E tests** with Nightwatch or Playwright
-- **Server-side filtering** implementation using API filter parameters
 - **State management** optimization with React Query or SWR
 - **Performance optimization** with React.memo and useMemo where appropriate
 - **Styles improvement** by removing bootsrap in favour of a more reuasble system like Tailwind, or css modules
