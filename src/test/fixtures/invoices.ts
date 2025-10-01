@@ -1,6 +1,6 @@
-import { Invoice } from 'types'
+import { Invoice, Product, Customer } from 'types'
 
-export const customerAlice = {
+export const customerAlice: Customer = {
   id: 1,
   first_name: 'Alice',
   last_name: 'Smith',
@@ -11,7 +11,7 @@ export const customerAlice = {
   country_code: '',
 }
 
-export const customerBob = {
+export const customerBob: Customer = {
   id: 2,
   first_name: 'Bob',
   last_name: 'Brown',
@@ -22,7 +22,7 @@ export const customerBob = {
   country_code: '',
 }
 
-export const customerPenny = {
+export const customerPenny: Customer = {
   id: 3,
   first_name: 'Penny',
   last_name: 'Lane',
@@ -33,17 +33,17 @@ export const customerPenny = {
   country_code: '',
 }
 
-export const productAudiS5 = {
+export const productAudiS5: Product = {
   id: 5,
-  label: 'Audi S5',
-  vat_rate: '20',
-  unit: 'piece',
   unit_price: '25000.00',
+  vat_rate: '20',
+  label: 'Audi S5',
+  unit: 'piece',
   unit_price_without_tax: '20833.33',
   unit_tax: '4166.67',
-} as any
+}
 
-export const productBuickLaCrosse = {
+export const productBuickLaCrosse: Product = {
   id: 10,
   unit_price: '20000.00',
   vat_rate: '10',
@@ -53,7 +53,7 @@ export const productBuickLaCrosse = {
   unit_tax: '1818.18',
 }
 
-export const productChevySilverado = {
+export const productChevySilverado: Product = {
   id: 11,
   unit_price: '42000.00',
   vat_rate: '20',
@@ -63,7 +63,7 @@ export const productChevySilverado = {
   unit_tax: '7000.00',
 }
 
-export const productFordFiesta = {
+export const productFordFiesta: Product = {
   id: 12,
   unit_price: '11000.00',
   vat_rate: '20',
@@ -73,7 +73,7 @@ export const productFordFiesta = {
   unit_tax: '1833.33',
 }
 
-export const productAudiA7 = {
+export const productAudiA7: Product = {
   id: 13,
   unit_price: '65000.00',
   vat_rate: '0',
@@ -82,6 +82,8 @@ export const productAudiA7 = {
   unit_price_without_tax: '65000.00',
   unit_tax: '0.00',
 }
+
+type InvoiceLine = Invoice['invoice_lines'][number]
 
 export function buildLine({
   id,
@@ -98,7 +100,7 @@ export function buildLine({
     | typeof productFordFiesta
     | typeof productAudiA7
   quantity: number
-}) {
+}): InvoiceLine {
   const q = quantity
   const gross = parseFloat(product.unit_price) * q
   const tax = parseFloat(product.unit_tax) * q
